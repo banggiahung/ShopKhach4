@@ -2,4 +2,95 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    Layout = "/Views/Shared/_LayoutAdmin.cshtml";
 }
+<style>
+
+</style>
+
+<h1>Thêm mới sản phẩm</h1>
+
+<div class="p-3">
+    <button type="button" class="btn btn-success p-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Thêm mới sản phẩm
+    </button>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên sản phẩm</th>
+            <th>Ảnh sản phẩm</th>
+            <th>Danh mục sản phẩm</th>
+            <th>Giá sản phẩm</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Sản phẩm 5</td>
+            <td>Sản phẩm 5</td>
+            <td>60.0</td>
+            <td>60.0</td>
+        </tr>
+    </tbody>
+</table>
+
+@*Modal thêm sản phẩm*@
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-xl modal-fullscreen ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label">Tên sản phẩm</label>
+                            <input class="form-control" type="text" placeholder="Tên sản phẩm" aria-label="default input example">
+                        </div>
+                        <div class="mb-3">
+
+                            <label class="form-label">Danh mục sản phẩm</label>
+                            <input class="form-control" type="text" placeholder="Danh mục sản phẩm" aria-label="default input example">
+                        </div> 
+                        <div class="mb-3">
+
+                            <label class="form-label">Mô tả ngắn sản phẩm</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Mô tả ngắn sản phẩm"></textarea>
+                        </div>
+                        <div class="mb-3">
+
+                            <label class="form-label">Giá sản phẩm</label>
+                            <input class="form-control" type="text" placeholder="Giá sản phẩm" aria-label="default input example">
+                        </div>
+
+
+                    </div>
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label for="formFileSm" class="form-label"> Ảnh sản phẩm chính </label>
+                            <input class="form-control form-control-sm" id="formFileSm" type="file">
+                        </div>
+                        <div class="mb-3">
+                            <div  class="form-label"> Ảnh xem trước </div>
+                            <img src="#" alt="Không có ảnh"/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

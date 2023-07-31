@@ -10,6 +10,9 @@
         public int? CategoryID { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public string? ImageMain { get; set; }
+        public IFormFile? PrPath { get; set; }
+
 
         public static implicit operator ProductsCRUDViewModels(Products _user)
         {
@@ -23,6 +26,7 @@
                 CategoryID = _user.CategoryID,
                 CreatedDate = _user.CreatedDate,
                 ModifiedDate = _user.ModifiedDate,
+                ImageMain = _user.ImageMain,
             };
         }
         public static implicit operator Products(ProductsCRUDViewModels vm)
@@ -37,6 +41,7 @@
                 CategoryID = vm.CategoryID,
                 CreatedDate = vm.CreatedDate,
                 ModifiedDate = vm.ModifiedDate,
+                ImageMain = vm.ImageMain,
             };
         }
     }

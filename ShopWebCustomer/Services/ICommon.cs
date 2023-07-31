@@ -6,7 +6,7 @@ namespace ShopWebCustomer.Services
 {
     public interface ICommon
     {
-        //Task<string> UploadedFile(IFormFile ProfilePicture);
+        Task<string> UploadedFile(IFormFile ProfilePicture);
         string GetSHA256(string str);
 
         //void SendEmail(DataUser request);

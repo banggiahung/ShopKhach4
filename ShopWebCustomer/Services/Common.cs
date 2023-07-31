@@ -48,26 +48,26 @@ namespace ShopWebCustomer.Services
             return Path.Combine(_iHostingEnvironment.ContentRootPath, "wwwroot/Upload");
         }
 
-        //     public async Task<string> UploadedFile(IFormFile ProfilePicture)
-        //     {
-        //         string ProfilePictureFileName = null;
+        public async Task<string> UploadedFile(IFormFile ProfilePicture)
+        {
+            string ProfilePictureFileName = null;
 
-        //         if (ProfilePicture != null)
-        //         {
-        //             string uploadsFolder = Path.Combine(_iHostingEnvironment.ContentRootPath, "wwwroot/Upload");
+            if (ProfilePicture != null)
+            {
+                string uploadsFolder = Path.Combine(_iHostingEnvironment.ContentRootPath, "wwwroot/Upload");
 
-        //             if (ProfilePicture.FileName == null)
-        //                 ProfilePictureFileName = Guid.NewGuid().ToString() + "_" + "blank-person.png";
-        //             else
-        //                 ProfilePictureFileName = Guid.NewGuid().ToString() + "_" + ProfilePicture.FileName;
-        //             string filePath = Path.Combine(uploadsFolder, ProfilePictureFileName);
-        //             using (var fileStream = new FileStream(filePath, FileMode.Create))
-        //             {
-        //                 ProfilePicture.CopyTo(fileStream);
-        //             }
-        //         }
-        //         return ProfilePictureFileName;
-        //     }
+                if (ProfilePicture.FileName == null)
+                    ProfilePictureFileName = Guid.NewGuid().ToString() + "_" + "blank-person.png";
+                else
+                    ProfilePictureFileName = Guid.NewGuid().ToString() + "_" + ProfilePicture.FileName;
+                string filePath = Path.Combine(uploadsFolder, ProfilePictureFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    ProfilePicture.CopyTo(fileStream);
+                }
+            }
+            return ProfilePictureFileName;
+        }
         public string GetSHA256(string str)
         {
             using (SHA256 sha256 = SHA256.Create())
