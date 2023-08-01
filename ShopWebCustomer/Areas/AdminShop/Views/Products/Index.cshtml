@@ -20,8 +20,8 @@
     <thead>
         <tr>
             <th>STT</th>
-            <th>Tên sản phẩm</th>
-            <th>Ảnh sản phẩm</th>
+            <th style="width: 20%">Tên sản phẩm</th>
+            <th style="width: 30%">Ảnh sản phẩm</th>
             <th>Danh mục sản phẩm</th>
             <th>Giá sản phẩm</th>
             <th></th>
@@ -44,9 +44,9 @@
                     {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.categoryID) }}   
             </td>
                 <td>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Edit" v-on:click="getItemsById(item.productID)">Sửa</button>|
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Delete" v-on:click="getItemsByIdDelete(item.productID)">Xóa|</button>
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Details" v-on:click="getItemsById(item.productID)">Chi tiết</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Edit" v-on:click="getItemsById(item.id)">Sửa</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Delete" v-on:click="getItemsByIdDelete(item.productID)">Xóa</button>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Details" v-on:click="getItemsById(item.id)">Chi tiết</button>
 
                 </td>
         </tr>
@@ -184,6 +184,7 @@
                     <div class="col-6">
                         <div class="mb-3">
                                 <input type="hidden" v-model="productID" />
+                                <input type="hidden" v-model="id" />
                             <label class="form-label">Tên sản phẩm</label>
                                 <input class="form-control" type="text" placeholder="Tên sản phẩm" aria-label="default input example"  v-model="ProductName" v-on:input="generateSlug">
                         </div>

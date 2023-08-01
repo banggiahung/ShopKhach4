@@ -2,7 +2,8 @@
 {
     public class ProductsCRUDViewModels
     {
-        public int ProductID { get; set; }
+        public int ID { get; set; }
+        public string? ProductID { get; set; }
         public string? ProductName { get; set; }
         public string? Description { get; set; }
         public string? Slug { get; set; }
@@ -27,6 +28,7 @@
                 CreatedDate = _user.CreatedDate,
                 ModifiedDate = _user.ModifiedDate,
                 ImageMain = _user.ImageMain,
+                ID = _user.ID,
             };
         }
         public static implicit operator Products(ProductsCRUDViewModels vm)
@@ -42,6 +44,7 @@
                 CreatedDate = vm.CreatedDate,
                 ModifiedDate = vm.ModifiedDate,
                 ImageMain = vm.ImageMain,
+                ID = vm.ID,
             };
         }
     }

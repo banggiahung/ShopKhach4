@@ -7,6 +7,7 @@ using ShopWebCustomer.Data;
 using ShopWebCustomer.Models;
 using ShopWebCustomer.Models.ProductsViewModels;
 using ShopWebCustomer.Services;
+using System.Data;
 
 namespace ShopWebCustomer.Areas.AdminShop.Controllers
 {
@@ -119,21 +120,21 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
         {
             try
             {
-               
 
-                    if (model.PrPath != null)
-                    {
-                        var PrPath = await _iCommon.UploadedFile(model.PrPath);
-                        model.ImageMain = "/upload/" + PrPath;
-                    }
-                    model.CreatedDate = DateTime.Now;
-                    model.ModifiedDate = DateTime.Now;
-                    _context.Products.Add(model);
-                    await _context.SaveChangesAsync();
-                    return Ok(model);
 
-               
-               
+                if (model.PrPath != null)
+                {
+                    var PrPath = await _iCommon.UploadedFile(model.PrPath);
+                    model.ImageMain = "/upload/" + PrPath;
+                }
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
+                _context.Products.Add(model);
+                await _context.SaveChangesAsync();
+                return Ok(model);
+
+
+
             }
             catch (Exception ex)
             {
@@ -151,7 +152,7 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
                 {
                     try
                     {
-                        vm = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == id);
+                        vm = await _context.Products.FirstOrDefaultAsync(x => x.ID == id);
 
                         if (vm == null)
                         {
@@ -184,7 +185,7 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
         {
             try
             {
-                var existingProduct = await _context.Products.FindAsync(model.ProductID);
+                var existingProduct = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == model.ProductID);
 
                 if (existingProduct == null)
                 {
@@ -198,7 +199,7 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
 
 
             }
-            
+
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
@@ -211,32 +212,37 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
         {
             try
             {
-                
-                    var existingProduct = await _context.Products.FindAsync(model.ProductID);
+                var existingProduct = await _context.Products.FindAsync(model.ID);
 
-                    if (existingProduct == null)
-                    {
-                        return NotFound("Không tìm thấy");
-                    }
+                if (existingProduct == null)
+                {
+                    return NotFound("Không tìm thấy");
+                }
 
-                    if (model.PrPath != null)
-                    {
-                        var PrPath = await _iCommon.UploadedFile(model.PrPath);
-                        model.ImageMain = "/upload/" + PrPath;
-                    }
-                    else
-                    {
-                        model.ImageMain = existingProduct.ImageMain;
-                    }
-                    _context.Products.Update(model);
-                   await _context.SaveChangesAsync();
-                    return Ok(model);
-              
+                if (model.PrPath != null)
+                {
+                    var PrPath = await _iCommon.UploadedFile(model.PrPath);
+                    existingProduct.ImageMain = "/upload/" + PrPath;
+                }
+               
+
+                // Cập nhật các thuộc tính khác của existingProduct nếu cần
+                existingProduct.ProductName = model.ProductName;
+                existingProduct.Description = model.Description;
+                existingProduct.Slug = model.Slug;
+                existingProduct.Price = model.Price;
+                existingProduct.CategoryID = model.CategoryID;
+                existingProduct.ModifiedDate = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(existingProduct);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
         }
+
     }
 }

@@ -12,7 +12,8 @@
         previewImage: null,
         uploadedImage: null,
         productID: 0,
-        product_ImagePath: ""
+        product_ImagePath: "",
+        id : ""
     },
     mounted() {
         this.initData();
@@ -91,8 +92,10 @@
                     this.CategoryID = response.data.categoryID;
                     this.product_ImagePath = response.data.imageMain;
                     this.productID = response.data.productID;
+                    this.id = response.data.id;
                     return Promise.resolve();
                 });
+            this.resetDataImg();
         },
         resetData() {
             this.ProductName = null;
@@ -101,7 +104,17 @@
             this.Price = 0;
             this.CategoryID = 0;
             this.product_ImagePath = null;
+            this.productID = null;
+            this.id = null;
+            this.previewImage = null;
+
            
+        },
+        resetDataImg() {
+            this.previewImage = null;
+            this.uploadedImage = null;
+            this.imageFile = null;
+            
         },
         async editProducts() {
             try {
@@ -112,6 +125,8 @@
                 formData.append('Price', this.Price);
                 formData.append('CategoryID', this.CategoryID);
                 formData.append('ProductID', this.productID);
+                formData.append('ID', this.id);
+                console.log("this.$refs.PrPath1.files[0] ->", this.$refs.PrPath1.files[0]);
                 if (this.$refs.PrPath1.files[0] != null) {
                     formData.append('PrPath', this.$refs.PrPath1.files[0]);
 
@@ -130,7 +145,7 @@
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        this.initData();
+                        window.location.reload();
                     }
                 });
             } catch (error) {
@@ -142,7 +157,8 @@
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        this.initData();
+                        window.location.reload();
+
                     }
                 });
             }
