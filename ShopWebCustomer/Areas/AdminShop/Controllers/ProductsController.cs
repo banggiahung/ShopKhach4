@@ -205,5 +205,38 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
             }
 
         }
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct(ProductsCRUDViewModels model)
+        {
+            try
+            {
+                
+                    var existingProduct = await _context.Products.FindAsync(model.ProductID);
+
+                    if (existingProduct == null)
+                    {
+                        return NotFound("Không tìm thấy");
+                    }
+
+                    if (model.PrPath != null)
+                    {
+                        var PrPath = await _iCommon.UploadedFile(model.PrPath);
+                        model.ImageMain = "/upload/" + PrPath;
+                    }
+                    else
+                    {
+                        model.ImageMain = existingProduct.ImageMain;
+                    }
+                    _context.Products.Update(model);
+                   await _context.SaveChangesAsync();
+                    return Ok(model);
+              
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
     }
 }

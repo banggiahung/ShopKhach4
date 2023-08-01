@@ -11,15 +11,20 @@
         imageFile: null,
         previewImage: null,
         uploadedImage: null,
+        productID: 0,
+        product_ImagePath: ""
     },
     mounted() {
-        axios.get("/Products/GetAllProduct")
-            .then((response) => {
-                this.dataItems = response.data;
-                return Promise.resolve();
-            });
+        this.initData();
     },
     methods: {
+        initData() {
+            axios.get("/Products/GetAllProduct")
+                .then((response) => {
+                    this.dataItems = response.data;
+                    return Promise.resolve();
+                });
+        },
         onFileChange(event) {
             this.imageFile = event.target.files[0];
             this.previewImage = URL.createObjectURL(this.imageFile);
@@ -76,14 +81,43 @@
                 });
             }
         },
-        async addProductsSubCategory() {
+        getItemsById(id) {
+            axios.get(`/Products/getIdProducts?id=${id}`)
+                .then((response) => {
+                    this.ProductName = response.data.productName;
+                    this.Description = response.data.description;
+                    this.Slug = response.data.slug;
+                    this.Price = response.data.price;
+                    this.CategoryID = response.data.categoryID;
+                    this.product_ImagePath = response.data.imageMain;
+                    this.productID = response.data.productID;
+                    return Promise.resolve();
+                });
+        },
+        resetData() {
+            this.ProductName = null;
+            this.Description = null;
+            this.Slug = null;
+            this.Price = 0;
+            this.CategoryID = 0;
+            this.product_ImagePath = null;
+           
+        },
+        async editProducts() {
             try {
                 const formData = new FormData();
-                formData.append('SubCategory_Name', this.SubCategory_Name);
-                formData.append('CategoryId', 1);
+                formData.append('ProductName', this.ProductName);
+                formData.append('Description', this.Description);
+                formData.append('Slug', this.Slug);
+                formData.append('Price', this.Price);
+                formData.append('CategoryID', this.CategoryID);
+                formData.append('ProductID', this.productID);
+                if (this.$refs.PrPath1.files[0] != null) {
+                    formData.append('PrPath', this.$refs.PrPath1.files[0]);
 
+                }
 
-                await axios.post('/Admin/Dashboard/AddCateSub', formData,
+                await axios.post('/Products/UpdateProduct', formData,
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data'
@@ -96,7 +130,7 @@
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.reload();
+                        this.initData();
                     }
                 });
             } catch (error) {
@@ -108,7 +142,7 @@
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.reload();
+                        this.initData();
                     }
                 });
             }

@@ -11,7 +11,7 @@
 <h1>Thêm mới sản phẩm</h1>
 
 <div class="p-3">
-    <button type="button" class="btn btn-success p-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-success p-2" data-bs-toggle="modal" data-bs-target="#exampleModal" v-on:click="resetData">
         Thêm mới sản phẩm
     </button>
 </div>
@@ -24,6 +24,7 @@
             <th>Ảnh sản phẩm</th>
             <th>Danh mục sản phẩm</th>
             <th>Giá sản phẩm</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -42,6 +43,12 @@
             <td>
                     {{ new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.categoryID) }}   
             </td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Edit" v-on:click="getItemsById(item.productID)">Sửa</button>|
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#Delete" v-on:click="getItemsByIdDelete(item.productID)">Xóa|</button>
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#Details" v-on:click="getItemsById(item.productID)">Chi tiết</button>
+
+                </td>
         </tr>
     </tbody>
 </table>
@@ -55,7 +62,7 @@
     <div class="modal-dialog  modal-xl modal-fullscreen ">
         <div class="modal-content ">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Thêm mới sản phẩm</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
@@ -103,8 +110,128 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" v-on:click="addProducts">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" v-on:click="addProducts">Lưu sản phẩm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*details*@
+    <div class="modal fade" id="Details" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-xl modal-fullscreen ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Chi tiết sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                            <label class="form-label">Tên sản phẩm</label>
+                                <input class="form-control" type="text" placeholder="Tên sản phẩm" aria-label="default input example" readonly v-model="ProductName" v-on:input="generateSlug">
+                        </div>
+                        <div class="mb-3">
+
+                            <label class="form-label">Danh mục sản phẩm</label>
+                                <input class="form-control" type="text" placeholder="Danh mục sản phẩm" aria-label="default input example" readonly v-model="CategoryID">
+                        </div>
+                            <div class="mb-3">
+
+                                <label class="form-label">Slug sản phẩm</label>
+                                <input class="form-control" type="text" placeholder="Slug" aria-label="default input example" v-model="Slug" readonly>
+                            </div>
+                        <div class="mb-3">
+
+                            <label class="form-label">Mô tả ngắn sản phẩm</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Mô tả ngắn sản phẩm" v-model="Description" readonly></textarea>
+                        </div>
+                        <div class="mb-3">
+
+                            <label class="form-label">Giá sản phẩm</label>
+                                <input class="form-control" readonly type="text" placeholder="Giá sản phẩm" aria-label="default input example" v-model="Price">
+                        </div>
+                         
+
+                    </div>
+                    <div class="col-6">
+                        
+                        <div class="mb-3">
+                            <div  class="form-label"> Ảnh xem trước </div>
+                                <img :src="product_ImagePath" alt="" style="width:50%" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*edit*@
+    <div class="modal fade" id="Edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-xl modal-fullscreen ">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Chi tiết sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="mb-3">
+                                <input type="hidden" v-model="productID" />
+                            <label class="form-label">Tên sản phẩm</label>
+                                <input class="form-control" type="text" placeholder="Tên sản phẩm" aria-label="default input example"  v-model="ProductName" v-on:input="generateSlug">
+                        </div>
+                        <div class="mb-3">
+
+                            <label class="form-label">Danh mục sản phẩm</label>
+                                <input class="form-control" type="text" placeholder="Danh mục sản phẩm" aria-label="default input example"  v-model="CategoryID">
+                        </div>
+                            <div class="mb-3">
+
+                                <label class="form-label">Slug sản phẩm</label>
+                                <input class="form-control" type="text" placeholder="Slug" aria-label="default input example" v-model="Slug" >
+                            </div>
+                        <div class="mb-3">
+
+                            <label class="form-label">Mô tả ngắn sản phẩm</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" placeholder="Mô tả ngắn sản phẩm" v-model="Description" ></textarea>
+                        </div>
+                        <div class="mb-3">
+
+                            <label class="form-label">Giá sản phẩm</label>
+                                <input class="form-control"  type="text" placeholder="Giá sản phẩm" aria-label="default input example" v-model="Price">
+                        </div>
+                         
+
+                    </div>
+                    <div class="col-6">
+                            <div class="mb-3">
+                                <label for="formFileSm" class="form-label"> Ảnh sản phẩm chính </label>
+                                <input type="file" ref="PrPath1" v-on:change="onFileChange" accept="image/*">
+
+                            </div>
+                            <div class="mb-3">
+                                <div class="form-label"> Ảnh xem trước </div>
+                                <img :src="previewImage" alt="" style="width:50%" />
+                            </div>
+                        <div class="mb-3">
+                            <div  class="form-label"> Ảnh đang có  </div>
+                                <img :src="product_ImagePath" alt="" style="width:50%" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" v-on:click="editProducts">Sửa sản phẩm</button>
+
             </div>
         </div>
     </div>
