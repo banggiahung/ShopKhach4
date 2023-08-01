@@ -104,6 +104,14 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
                 return View();
             }
         }
+        [AllowAnonymous]
+        [HttpGet]
+
+        public IActionResult GetAllProduct()
+        {
+            var pr = _context.Products.ToList();
+            return Ok(pr);
+        }
         //Thêm sản phẩm
         [AllowAnonymous]
         [HttpPost]
@@ -190,10 +198,12 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
 
 
             }
+            
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
+
         }
     }
 }
