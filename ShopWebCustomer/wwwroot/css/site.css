@@ -253,7 +253,7 @@ nav ul {
     }
 
 .wsk-cp-text {
-    padding-top: 150%;
+    padding-top: 110%;
 }
 
     .wsk-cp-text .category {
@@ -291,7 +291,7 @@ nav ul {
 .wsk-cp-product:hover .wsk-cp-text .category > span {
     border-color: #ddd;
     box-shadow: none;
-    padding: 11px 28px;
+    padding: 11px 20px;
     cursor: pointer;
 }
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using ShopWebCustomer.Data;
 using ShopWebCustomer.Models;
+using ShopWebCustomer.Models.CategoriesViewModels;
 using ShopWebCustomer.Models.ProductsViewModels;
 using ShopWebCustomer.Services;
 using System.Data;
@@ -33,6 +34,10 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
             _configuration = configuration;
         }
         public ActionResult Index()
+        {
+            return View();
+        }
+        public ActionResult Categories()
         {
             return View();
         }
@@ -110,11 +115,27 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
 
         public IActionResult GetAllProduct()
         {
-            var pr = _context.Products.ToList();
-            return Ok(pr);
+
+            var pr = from _pr in _context.Products
+                     join _cate in _context.Categories on _pr.CategoryID equals _cate.CategoryID
+                     select new ProductsCRUDViewModels
+                     {
+                         ID = _pr.ID,
+                         ProductID = _pr.ProductID,
+                         ProductName = _pr.ProductName,
+                         Description = _pr.Description,
+                         Slug = _pr.Slug,
+                         Price = _pr.Price,
+                         CategoryID = _pr.CategoryID,
+                         CreatedDate = _pr.CreatedDate,
+                         ModifiedDate = _pr.ModifiedDate,
+                         ImageMain = _pr.ImageMain,
+                         CategoryName = _cate.CategoryName,
+                     };
+
+            return Ok(pr.ToList());
         }
         //Thêm sản phẩm
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> AddProduct(ProductsCRUDViewModels model)
         {
@@ -178,14 +199,13 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-        [AllowAnonymous]
 
         [HttpPost]
-        public async Task<IActionResult> deleteProducts([FromForm] ProductsCRUDViewModels model)
+        public async Task<IActionResult> deleteProducts(ProductsCRUDViewModels model)
         {
             try
             {
-                var existingProduct = await _context.Products.FirstOrDefaultAsync(x => x.ProductID == model.ProductID);
+                var existingProduct = await _context.Products.FirstOrDefaultAsync(x => x.ID == model.ID);
 
                 if (existingProduct == null)
                 {
@@ -195,7 +215,7 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
                 _context.Products.Remove(existingProduct);
                 await _context.SaveChangesAsync();
 
-                return Ok(model);
+                return Ok(existingProduct);
 
 
             }
@@ -206,7 +226,6 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
             }
 
         }
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> UpdateProduct(ProductsCRUDViewModels model)
         {
@@ -224,7 +243,7 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
                     var PrPath = await _iCommon.UploadedFile(model.PrPath);
                     existingProduct.ImageMain = "/upload/" + PrPath;
                 }
-               
+
 
                 // Cập nhật các thuộc tính khác của existingProduct nếu cần
                 existingProduct.ProductName = model.ProductName;
@@ -243,6 +262,133 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        //danh mục
+
+        [AllowAnonymous]
+        [HttpGet]
+
+        public IActionResult GetAllCategory()
+        {
+            var pr = _context.Categories.ToList();
+            return Ok(pr);
+        }
+
+        //thêm danh mục
+        [HttpPost]
+        public async Task<IActionResult> AddCategory(CategoriesCRUDViewModels model)
+        {
+            try
+            {
+                if (model.PrPath != null)
+                {
+                    var PrPath = await _iCommon.UploadedFile(model.PrPath);
+                    model.ImageCategory = "/upload/" + PrPath;
+                }
+                model.CreatedDate = DateTime.Now;
+                model.ModifiedDate = DateTime.Now;
+                _context.Categories.Add(model);
+                await _context.SaveChangesAsync();
+                return Ok(model);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> getIdCategory(int id)
+        {
+            try
+            {
+                Categories vm = new Categories();
+                if (id > 0)
+                {
+                    try
+                    {
+                        vm = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryID == id);
+
+                        if (vm == null)
+                        {
+                            return BadRequest("Không tìm thấy đối tượng với ID tương ứng");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return BadRequest(ex.Message);
+                    }
+
+                }
+                else
+                {
+                    return NotFound();
+                }
+
+
+                return Ok(vm);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateCategory(CategoriesCRUDViewModels model)
+        {
+            try
+            {
+                var existingProduct = await _context.Categories.FindAsync(model.CategoryID);
+
+                if (existingProduct == null)
+                {
+                    return NotFound("Không tìm thấy");
+                }
+
+                if (model.PrPath != null)
+                {
+                    var PrPath = await _iCommon.UploadedFile(model.PrPath);
+                    existingProduct.ImageCategory = "/upload/" + PrPath;
+                }
+
+                existingProduct.CategoryName = model.CategoryName;
+                existingProduct.ModifiedDate = DateTime.Now;
+                await _context.SaveChangesAsync();
+
+                return Ok(existingProduct);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteCategory(CategoriesCRUDViewModels model)
+        {
+            try
+            {
+                var existingProduct = await _context.Categories.FirstOrDefaultAsync(x => x.CategoryID == model.CategoryID);
+
+                if (existingProduct == null)
+                {
+                    return NotFound();
+
+                }
+                _context.Categories.Remove(existingProduct);
+                await _context.SaveChangesAsync();
+
+                return Ok(existingProduct);
+
+
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+
+        }
+
 
     }
 }

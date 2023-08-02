@@ -30,7 +30,39 @@ namespace ShopWebCustomer.Controllers
         {
             return View();
         }
+        public IActionResult CategoryIndex()
+        {
+           
+            return View();
+        }
+		[HttpGet]
+		public IActionResult DetailsProducts(int id)
+        {
 
+			if (id > 0)
+			{
+                try
+                {
+                    var vm = _context.Products.FirstOrDefault(x => x.ID == id);
+
+                    if (vm == null)
+					{
+						return BadRequest("Không tìm thấy đối tượng với ID tương ứng");
+					}
+					return View(vm);
+
+				}
+				catch (Exception ex)
+				{
+					return BadRequest(ex.Message);
+				}
+
+			}
+			else
+			{
+				return NotFound();
+			}
+		}
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

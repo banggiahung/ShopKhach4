@@ -9,6 +9,8 @@ namespace ShopWebCustomer.Models.CategoriesViewModels
         public string? ImageCategory { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
+        public IFormFile? PrPath { get; set; }
+
 
         public static implicit operator CategoriesCRUDViewModels(Categories _user)
         {

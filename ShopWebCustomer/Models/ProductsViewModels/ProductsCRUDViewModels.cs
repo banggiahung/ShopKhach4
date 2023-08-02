@@ -13,6 +13,7 @@
         public DateTime? ModifiedDate { get; set; }
         public string? ImageMain { get; set; }
         public IFormFile? PrPath { get; set; }
+        public string? CategoryName { get; set; }
 
 
         public static implicit operator ProductsCRUDViewModels(Products _user)

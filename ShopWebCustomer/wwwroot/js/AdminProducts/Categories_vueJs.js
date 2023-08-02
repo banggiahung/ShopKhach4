@@ -1,8 +1,9 @@
-﻿Admin_vue = new Vue({
-    el: '#Admin_vue',
+﻿Admin_category = new Vue({
+    el: '#Admin_category',
     data: {
-        dataItems:[],
+        dataItems: [],
         ProductName: "",
+        CategoryName: "",
         Description: "",
         Slug: "",
         Price: 0,
@@ -16,21 +17,25 @@
         id: "",
         categoryID: 0,
         categoryName: "",
-        CateItems:[],
+        imageCategory: "",
+        createdDate: "",
+        modifiedDate: "",
+
     },
     mounted() {
-        axios.get("/Products/GetAllProduct")
+        axios.get("/Products/GetAllCategory")
             .then((response) => {
                 this.dataItems = response.data;
                 return Promise.resolve();
-            }).then(() => {
-                $("#table_products").DataTable({
+            })
+            .then(() => {
+                $("#cate_table").DataTable({
                     'columnDefs': [{
                         'targets': [-1],
                         'orderable': false,
                     }],
                     searching: true,
-                    iDisplayLength: 6,
+                    iDisplayLength: 7,
                     "ordering": false,
                     lengthChange: false,
                     aaSorting: [[0, "desc"]],
@@ -281,17 +286,14 @@
                     },
                 });
             });
-        this.initData();
-
     },
     methods: {
         initData() {
-           
-            axios.get("/Products/GetAllCategory")
+            axios.get("/Products/GetAllProduct")
                 .then((response) => {
-                    this.CateItems = response.data;
+                    this.dataItems = response.data;
                     return Promise.resolve();
-                })
+                });
         },
         onFileChange(event) {
             this.imageFile = event.target.files[0];
@@ -309,17 +311,13 @@
             // Đảm bảo slug không bắt đầu hoặc kết thúc bằng dấu '-'
             this.Slug = this.Slug.replace(/^\-+|\-+$/g, '');
         },
-        async addProducts() {
+        async addCategory() {
             try {
                 const formData = new FormData();
-                formData.append('ProductName', this.ProductName);
-                formData.append('Description', this.Description);
-                formData.append('Slug', this.Slug);
-                formData.append('Price', this.Price);
-                formData.append('CategoryID', this.CategoryID); 
+                formData.append('CategoryName', this.CategoryName);
                 formData.append('PrPath', this.$refs.PrPath.files[0]);
 
-                await axios.post('/Products/AddProduct', formData,
+                await axios.post('/Products/AddCategory', formData,
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data'
@@ -350,56 +348,42 @@
             }
         },
         getItemsById(id) {
-            axios.get(`/Products/getIdProducts?id=${id}`)
+            axios.get(`/Products/getIdCategory?id=${id}`)
                 .then((response) => {
-                    this.ProductName = response.data.productName;
-                    this.Description = response.data.description;
-                    this.Slug = response.data.slug;
-                    this.Price = response.data.price;
-                    this.CategoryID = response.data.categoryID;
-                    this.product_ImagePath = response.data.imageMain;
-                    this.productID = response.data.productID;
-                    this.id = response.data.id;
+
+                    this.categoryID = response.data.categoryID;
+                    this.CategoryName = response.data.categoryName;
+                    this.imageCategory = response.data.imageCategory;
+                    this.createdDate = response.data.createdDate;
+                    this.modifiedDate = response.data.modifiedDate;
+
                     return Promise.resolve();
                 });
             this.resetDataImg();
         },
         resetData() {
-            this.ProductName = null;
-            this.Description = null;
-            this.Slug = null;
-            this.Price = 0;
-            this.CategoryID = 0;
-            this.product_ImagePath = null;
-            this.productID = null;
-            this.id = null;
-            this.previewImage = null;
+            this.categoryID = 0;
+            this.CategoryName = "";
+            this.imageCategory = "";
+            this.createdDate = "";
+            this.modifiedDate = "";
 
-           
         },
         resetDataImg() {
             this.previewImage = null;
             this.uploadedImage = null;
             this.imageFile = null;
-            
+
         },
-        async editProducts() {
+        async editCategory() {
             try {
                 const formData = new FormData();
-                formData.append('ProductName', this.ProductName);
-                formData.append('Description', this.Description);
-                formData.append('Slug', this.Slug);
-                formData.append('Price', this.Price);
-                formData.append('CategoryID', this.CategoryID);
-                formData.append('ProductID', this.productID);
-                formData.append('ID', this.id);
-                console.log("this.$refs.PrPath1.files[0] ->", this.$refs.PrPath1.files[0]);
+                formData.append('CategoryName', this.CategoryName);
+                formData.append('CategoryID', this.categoryID);
                 if (this.$refs.PrPath1.files[0] != null) {
                     formData.append('PrPath', this.$refs.PrPath1.files[0]);
-
                 }
-
-                await axios.post('/Products/UpdateProduct', formData,
+                await axios.post('/Products/UpdateCategory', formData,
                     {
                         headers: {
                             'Content-Type': 'multipart/form-data'
@@ -413,8 +397,6 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         window.location.reload();
-
-
                     }
                 });
             } catch (error) {
@@ -433,12 +415,12 @@
             }
         },
         getItemsByIdDelete(id) {
-            axios.get(`/Products/getIdProducts/${id}`)
+            axios.get(`/Products/getIdCategory/${id}`)
                 .then((response) => {
-                    this.id = response.data.id;
+                    this.categoryID = response.data.categoryID;
                     if (this.id != null) {
                         Swal.fire({
-                            title: 'Xóa sản phẩm',
+                            title: 'Xóa danh mục',
                             text: 'Bạn có chắc chắn muốn xóa',
                             icon: 'warning',
                             showCancelButton: true,
@@ -447,8 +429,8 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 const formData = new FormData();
-                                formData.append('ID', this.id);
-                                axios.post('/Products/deleteProducts', formData, {
+                                formData.append('CategoryID', this.categoryID);
+                                axios.post('/Products/DeleteCategory', formData, {
                                     headers: {
                                         'Content-Type': 'application/x-www-form-urlencoded'
                                     }
