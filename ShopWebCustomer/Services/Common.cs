@@ -84,42 +84,55 @@ namespace ShopWebCustomer.Services
                 return sb.ToString();
             }
         }
-       
-   //     public void SendEmail(DataUser request)
-   //     {
+		public string GetMD5(string str)
+		{
+			MD5 md5 = new MD5CryptoServiceProvider();
+			byte[] fromData = Encoding.UTF8.GetBytes(str);
+			byte[] targetData = md5.ComputeHash(fromData);
+			string byte2String = null;
 
-   //         var message = new MimeMessage();
-   //         message.From.Add(new MailboxAddress("", _configuration.GetSection("EmailUserName").Value));
-   //         message.To.Add(MailboxAddress.Parse(request.UserName));
-   //         message.Subject = "Khôi phục mật khẩu";
+			for (int i = 0; i < targetData.Length; i++)
+			{
+				byte2String += targetData[i].ToString("x2");
 
-   //         var builder = new BodyBuilder();
-			////builder.HtmlBody = $"Chào {request.UserName},{Environment.NewLine}{Environment.NewLine}Bạn đã yêu cầu khôi phục mật khẩu tại hệ thống của chúng tôi.{Environment.NewLine}Mã xác thực của bạn là {request.TokenPassword}.{Environment.NewLine}Mã xác thực này sẽ hết hạn trong vòng 30 phút. Vui lòng đăng nhập và thay đổi mật khẩu của bạn trong khoảng thời gian này.{Environment.NewLine}{Environment.NewLine}Trân trọng,{Environment.NewLine}Hệ thống quản lý.";
+			}
+			return byte2String;
+		}
+		//     public void SendEmail(DataUser request)
+		//     {
 
-			//message.Body = builder.ToMessageBody();
+		//         var message = new MimeMessage();
+		//         message.From.Add(new MailboxAddress("", _configuration.GetSection("EmailUserName").Value));
+		//         message.To.Add(MailboxAddress.Parse(request.UserName));
+		//         message.Subject = "Khôi phục mật khẩu";
 
-   //         using (var client = new SmtpClient())
-   //         {
-   //             client.Connect(_configuration.GetSection("EmailHost").Value, 587, MailKit.Security.SecureSocketOptions.StartTls);
-   //             client.Authenticate(_configuration.GetSection("EmailUserName").Value, _configuration.GetSection("EmailPassword").Value);
-   //             client.Send(message);
-   //             client.Disconnect(true);
-   //         }
-   //     }
-       
-   //     public string GenerateToken()
-   //     {
-   //         // Tạo mã ngẫu nhiên bằng cách sử dụng các ký tự khác nhau.
-   //         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-   //         var random = new Random();
-   //         var token = new string(
-   //             Enumerable.Repeat(chars, 20)
-   //             .Select(s => s[random.Next(s.Length)])
-   //             .ToArray());
+		//         var builder = new BodyBuilder();
+		////builder.HtmlBody = $"Chào {request.UserName},{Environment.NewLine}{Environment.NewLine}Bạn đã yêu cầu khôi phục mật khẩu tại hệ thống của chúng tôi.{Environment.NewLine}Mã xác thực của bạn là {request.TokenPassword}.{Environment.NewLine}Mã xác thực này sẽ hết hạn trong vòng 30 phút. Vui lòng đăng nhập và thay đổi mật khẩu của bạn trong khoảng thời gian này.{Environment.NewLine}{Environment.NewLine}Trân trọng,{Environment.NewLine}Hệ thống quản lý.";
 
-   //         return token;
-   //     }
-    }
+		//message.Body = builder.ToMessageBody();
+
+		//         using (var client = new SmtpClient())
+		//         {
+		//             client.Connect(_configuration.GetSection("EmailHost").Value, 587, MailKit.Security.SecureSocketOptions.StartTls);
+		//             client.Authenticate(_configuration.GetSection("EmailUserName").Value, _configuration.GetSection("EmailPassword").Value);
+		//             client.Send(message);
+		//             client.Disconnect(true);
+		//         }
+		//     }
+
+		//     public string GenerateToken()
+		//     {
+		//         // Tạo mã ngẫu nhiên bằng cách sử dụng các ký tự khác nhau.
+		//         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		//         var random = new Random();
+		//         var token = new string(
+		//             Enumerable.Repeat(chars, 20)
+		//             .Select(s => s[random.Next(s.Length)])
+		//             .ToArray());
+
+		//         return token;
+		//     }
+	}
 
        
 }

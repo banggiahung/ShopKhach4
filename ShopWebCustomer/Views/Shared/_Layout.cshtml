@@ -35,7 +35,7 @@
             <div>
                 <div class="container ">
                     <div class="row align-items-end">
-                        <div class="col-6 img-logo">
+                        <div class="col-4 img-logo">
                             <img src="~/Img/MainLogo.png" alt="">
 
                         </div>
@@ -45,18 +45,54 @@
                                     <a href="#">Home</a>
                                 </li>
                                 <li>
-                                    <a href="#">Link 1</a>
+                                    <a href="#">Sản phẩm</a>
                                 </li>
                                 <li>
-                                    <a href="#">Link 2</a>
+                                    <a href="#">Giới thiệu</a>
                                 </li>
                                 <li>
-                                    <a href="#">Link 3</a>
+                                    <a href="#">Chính sách</a>
                                 </li>
                                 <li>
-                                    <a href="#">Link 4</a>
+                                    <a href="#">Địa điểm</a>
                                 </li>
                             </ul>
+                        </div>
+                        <div class="col-2 d-flex justify-content-evenly">
+                            @if(ViewBag.LinkUser != null)
+                            {
+                                <div>
+                                    <a href="#" style="color: #333;font-size: 32px;">
+
+                                        <i class='bx bxs-shopping-bag' ></i>
+                                    </a>
+
+                                </div>
+                                <div>
+                                    <a href="/Home/Logout" style="color: #333;font-size: 32px;">
+                                        <i class='bx bx-log-out-circle'></i>
+
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="/Home/User" style="color: #333;font-size: 32px;">
+                                        <i class='bx bxs-user'></i>
+                                    </a>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <a href="/Home/Login" style="color: #333;font-size: 32px;">
+                                        <i class='bx bxs-user'></i>
+                                    </a>
+
+                                </div>
+                            }
+
+                           
+                            
                         </div>
                     </div>
 

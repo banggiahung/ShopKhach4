@@ -30,7 +30,9 @@
         <div class="row">
             <div class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3" v-for="(item,index) in dataItems" :key="index">
                 <div class="product">
-                    <img :src="item.imageMain" alt="">
+                    <a :href="`/Home/DetailsProduct?id=${item.id}`">
+                        <img :src="item.imageMain" alt="">
+                    </a>
                     <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
                         <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
                         <li class="icon mx-3"><span class="far fa-heart"></span></li>
@@ -45,133 +47,9 @@
                 </div>
                 <div class="price">{{formatCurrency(item.price)}}</div>
             </div>
-           @* <div class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3">
-                <div class="product">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNHszfFRG_jz95o8bUBv1ezlQIKE2QiBO1FA&usqp=CAU"
-                         alt="">
-                    <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
-                        <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
-                        <li class="icon mx-3"><span class="far fa-heart"></span></li>
-                        <li class="icon"><span class="fas fa-shopping-bag"></span></li>
-                    </ul>
-                </div>
-                <div class="tag bg-black">out of stock</div>
-                <div class="title pt-4 pb-1">Sản phẩm 6</div>
-                <div class="d-flex align-content-center justify-content-center">
-                    <span class="fas fa-star"></span>
-                    <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span>
-                </div>
-                <div class="price">$ 55.0</div>
-            </div>
-            <div class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3">
-                <div class="product">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlFeLFHvKDOW-AK86riRtSHt4MGSOEmJae6g&usqp=CAU"
-                         alt="">
-                    <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
-                        <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
-                        <li class="icon mx-3"><span class="far fa-heart"></span></li>
-                        <li class="icon"><span class="fas fa-shopping-bag"></span></li>
-                    </ul>
-                </div>
-                <div class="tag bg-green">new</div>
-                <div class="title pt-4 pb-1"> Sản phẩm 7</div>
-                <div class="d-flex align-content-center justify-content-center">
-                    <span class="fas fa-star"></span>
-                    <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span>
-                </div>
-                <div class="price">$ 70.0</div>
-            </div>
-            <div class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3">
-                <div class="product">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSirrpluSsQqWKKTYNSvoUBjcfbpQmnvl6loQ&usqp=CAU"
-                         alt="">
-                    <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
-                        <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
-                        <li class="icon mx-3"><span class="far fa-heart"></span></li>
-                        <li class="icon"><span class="fas fa-shopping-bag"></span></li>
-                    </ul>
-                </div>
-                <div class="title pt-4 pb-1">Sản phẩm 8</div>
-                <div class="d-flex align-content-center justify-content-center">
-                    <span class="fas fa-star"></span>
-                    <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span>
-                </div>
-                <div class="price">$ 60.0</div>
-            </div>*@
+           
         </div>
-       @* <div class="row">
-            <div class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3">
-                <div class="product">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDd_ixw2bVxZE21V_Ehi_mhLoku6Abdv5qR1WOXp3l5PDGhF-ihT9uCpnEYcvnK8A-3u4&usqp=CAU"
-                         alt="">
-                    <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
-                        <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
-                        <li class="icon mx-3"><span class="far fa-heart"></span></li>
-                        <li class="icon"><span class="fas fa-shopping-bag"></span></li>
-                    </ul>
-                </div>
-                <div class="tag bg-red">sale</div>
-                <div class="title pt-4 pb-1">Sản phẩm 1</div>
-                <div class="d-flex align-content-center justify-content-center">
-                    <span class="fas fa-star"></span>
-                    <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span>
-                </div>
-                <div class="price">$ 60.0</div>
-            </div>
-            <div class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3">
-                <div class="product">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAGhDeVJK_XYHh0Inu1gd6bVhINd3UrmZ75Q&usqp=CAU"
-                         alt="">
-                    <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
-                        <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
-                        <li class="icon mx-3"><span class="far fa-heart"></span></li>
-                        <li class="icon"><span class="fas fa-shopping-bag"></span></li>
-                    </ul>
-                </div>
-                <div class="tag bg-black">out of stock</div>
-                <div class="title pt-4 pb-1">Sản phẩm 2</div>
-                <div class="d-flex align-content-center justify-content-center">
-                    <span class="fas fa-star"></span>
-                    <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span>
-                </div>
-                <div class="price">$ 55.0</div>
-            </div>
-            <div class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3">
-                <div class="product">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgDMNi-fSgPhQSa0WgioJZZwPwnqMEULRFbA&usqp=CAU"
-                         alt="">
-                    <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
-                        <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
-                        <li class="icon mx-3"><span class="far fa-heart"></span></li>
-                        <li class="icon"><span class="fas fa-shopping-bag"></span></li>
-                    </ul>
-                </div>
-                <div class="title pt-4 pb-1"> Sản phẩm 3</div>
-                <div class="d-flex align-content-center justify-content-center">
-                    <span class="fas fa-star"></span>
-                    <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span>
-                </div>
-                <div class="price">$ 70.0</div>
-            </div>
-            <div class="col-lg-3 col-sm-6 d-flex flex-column align-items-center justify-content-center product-item my-3">
-                <div class="product">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS49tN2CZmwrf3vv1UMIicBMETDe8OMdpzotg&usqp=CAU"
-                         alt="">
-                    <ul class="d-flex align-items-center justify-content-center list-unstyled icons">
-                        <li class="icon"><span class="fas fa-expand-arrows-alt"></span></li>
-                        <li class="icon mx-3"><span class="far fa-heart"></span></li>
-                        <li class="icon"><span class="fas fa-shopping-bag"></span></li>
-                    </ul>
-                </div>
-                <div class="tag bg-green">new</div>
-                <div class="title pt-4 pb-1">Sản phẩm 4</div>
-                <div class="d-flex align-content-center justify-content-center">
-                    <span class="fas fa-star"></span>
-                    <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span> <span class="fas fa-star"></span>
-                </div>
-                <div class="price">$ 60.0</div>
-            </div>
-        </div>*@
+       
         <div class="d-flex justify-content-center">
             <button class="btn btn-success">Xem thêm</button>
         </div>

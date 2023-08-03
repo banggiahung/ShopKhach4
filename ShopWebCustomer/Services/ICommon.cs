@@ -8,8 +8,10 @@ namespace ShopWebCustomer.Services
     {
         Task<string> UploadedFile(IFormFile ProfilePicture);
         string GetSHA256(string str);
+		string GetMD5(string str);
 
-        //void SendEmail(DataUser request);
-        //string GenerateToken();
-    }
+
+		//void SendEmail(DataUser request);
+		//string GenerateToken();
+	}
 }

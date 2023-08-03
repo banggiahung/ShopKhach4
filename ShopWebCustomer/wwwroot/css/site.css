@@ -856,3 +856,52 @@ button {
         .copyright a:hover {
             color: #ff3666;
         }
+@media (max-width: 767px) {
+    .login__col + .login__col {
+        display: none;
+    }
+}
+
+/* Animations */
+@keyframes spinner {
+    from, to {
+        background-color: hsla(0,0%,100%,1);
+    }
+
+    50% {
+        background-color: hsla(0,0%,100%,0);
+    }
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: hsl(var(--hue),10%,10%);
+        --fg: hsl(var(--hue),10%,90%);
+    }
+
+    a {
+        color: hsl(var(--hue),90%,70%);
+    }
+
+    p {
+        color: hsl(var(--hue),10%,70%);
+    }
+
+    .login__checkbox,
+    .login__field {
+        box-shadow: 0 0 0 1px hsl(var(--hue),10%,30%) inset;
+    }
+
+        .login__checkbox:focus-visible,
+        .login__checkbox:hover,
+        .login__field:focus-visible,
+        .login__field:hover {
+            box-shadow: 0 0 0 1px hsl(var(--hue),90%,70%) inset;
+        }
+
+        .login__checkbox:checked:focus-visible,
+        .login__checkbox:checked:hover,
+        .login__field:checked:focus-visible,
+        .login__field:checked:hover {
+            box-shadow: 0 0 0 1px hsl(var(--hue),90%,50%) inset;
+        }
+}
