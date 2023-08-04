@@ -29,6 +29,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 </head>
+
+
 <body>
     <header>
         <nav>
@@ -36,22 +38,24 @@
                 <div class="container ">
                     <div class="row align-items-end">
                         <div class="col-4 img-logo">
+                            <a href="/">
                             <img src="~/Img/MainLogo.png" alt="">
 
+                            </a>
                         </div>
                         <div class="col-6">
                             <ul>
                                 <li>
-                                    <a href="#">Home</a>
+                                    <a href="/">Home</a>
                                 </li>
                                 <li>
-                                    <a href="#">Sản phẩm</a>
+                                    <a href="/Home/ProductShop">Sản phẩm</a>
                                 </li>
                                 <li>
-                                    <a href="#">Giới thiệu</a>
+                                    <a href="/Home/AboutUs">Giới thiệu</a>
                                 </li>
                                 <li>
-                                    <a href="#">Chính sách</a>
+                                    <a href="/Home/Privacy">Chính sách</a>
                                 </li>
                                 <li>
                                     <a href="#">Địa điểm</a>
@@ -59,12 +63,15 @@
                             </ul>
                         </div>
                         <div class="col-2 d-flex justify-content-evenly">
-                            @if(ViewBag.LinkUser != null)
+                            @if (ViewBag.LinkUser != null || ViewBag.Email != null)
                             {
-                                <div>
-                                    <a href="#" style="color: #333;font-size: 32px;">
+                                <div class="position-relative">
+                                    <a href="/Home/CartDetails" style="color: #333;font-size: 32px;">
 
                                         <i class='bx bxs-shopping-bag' ></i>
+                                        <div id="cartCount" class="position-absolute start-100 translate-middle-x badge rounded-pill padpa">
+                                            
+                                        </div>
                                     </a>
 
                                 </div>
@@ -75,7 +82,7 @@
                                     </a>
                                 </div>
                                 <div>
-                                    <a href="/Home/User" style="color: #333;font-size: 32px;">
+                                    <a href="/AccountUser/Index" style="color: #333;font-size: 32px;">
                                         <i class='bx bxs-user'></i>
                                     </a>
 
@@ -117,9 +124,13 @@
                     <div class="single_footer">
                         <h4>Services</h4>
                         <ul>
-                            <li><a href="#">Link 1</a></li>
-                            <li><a href="#">Link 2</a></li>
-                            <li><a href="#">Link 3</a></li>
+                            <li>
+                                <a href="/">Home</a>
+                            </li>
+                            <li>
+                                <a href="/Home/ProductShop">Sản phẩm</a>
+                            </li>
+                            
                         </ul>
                     </div>
                 </div><!--- END COL -->
@@ -127,9 +138,15 @@
                     <div class="single_footer single_footer_address">
                         <h4>Page Link</h4>
                         <ul>
-                            <li><a href="#">Link 4</a></li>
-                            <li><a href="#">Link 5</a></li>
-                            <li><a href="#">Link 6 </a></li>
+                            <li>
+                                <a href="/Home/AboutUs">Giới thiệu</a>
+                            </li>
+                            <li>
+                                <a href="/Home/Privacy">Chính sách</a>
+                            </li>
+                            <li>
+                                <a href="#">Địa điểm</a>
+                            </li>
                         </ul>
                     </div>
                 </div><!--- END COL -->
@@ -160,5 +177,26 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        var linkUserValue = '@ViewBag.LinkUser';
+        if (linkUserValue !== '') {
+            document.addEventListener("DOMContentLoaded", function () {
+                const cartCountElement = document.getElementById("cartCount");
+
+                axios.get("/Home/GetCart")
+                    .then(response => {
+                        const cartItems = response.data;
+                        const itemCount = cartItems.length;
+
+                        cartCountElement.innerHTML = itemCount;
+
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        }
+       
+    </script>
 </body>
 </html>

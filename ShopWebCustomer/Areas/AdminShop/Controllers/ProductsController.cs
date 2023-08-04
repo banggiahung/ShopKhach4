@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
+using PayPal.Api;
 using ShopWebCustomer.Data;
 using ShopWebCustomer.Models;
 using ShopWebCustomer.Models.CategoriesViewModels;
@@ -22,7 +23,7 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
         private readonly IUrlHelperFactory _urlHelperFactory;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IConfiguration _configuration;
-
+        private String _clientId = "AR-9fqpBDXmT746rD5JZZtyYV5GzUnqHruTeBJfDDxWPMh__zDiMWf8UmDTy0BYBuiYvmGt88dRYYcXM";
         // GET: ProductsController
         public ProductsController(ILogger<ProductsController> logger, ApplicationDbContext context, ICommon common, IUrlHelperFactory urlHelperFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
@@ -33,7 +34,9 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
             _httpContextAccessor = httpContextAccessor;
             _configuration = configuration;
         }
-        public ActionResult Index()
+      
+    
+    public ActionResult Index()
         {
             return View();
         }
@@ -121,7 +124,7 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
                      select new ProductsCRUDViewModels
                      {
                          ID = _pr.ID,
-                         ProductID = _pr.ProductID,
+                         Quantity = _pr.Quantity,
                          ProductName = _pr.ProductName,
                          Description = _pr.Description,
                          Slug = _pr.Slug,
@@ -133,7 +136,7 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
                          CategoryName = _cate.CategoryName,
                      };
 
-            return Ok(pr.ToList());
+            return Ok(pr.ToList().OrderByDescending(x=>x.ID));
         }
         //Thêm sản phẩm
         [HttpPost]
@@ -248,6 +251,7 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
                 // Cập nhật các thuộc tính khác của existingProduct nếu cần
                 existingProduct.ProductName = model.ProductName;
                 existingProduct.Description = model.Description;
+                existingProduct.Quantity = model.Quantity;
                 existingProduct.Slug = model.Slug;
                 existingProduct.Price = model.Price;
                 existingProduct.CategoryID = model.CategoryID;
@@ -389,6 +393,9 @@ namespace ShopWebCustomer.Areas.AdminShop.Controllers
 
         }
 
-
+        public IActionResult OrderAdmin()
+        {
+            return View();
+        }
     }
 }

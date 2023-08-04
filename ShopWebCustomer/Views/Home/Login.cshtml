@@ -224,7 +224,36 @@ p {
 /* Dark theme */
 
 /* Mobile */
+    .g_body {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
+    .g-button {
+        border: 1px solid rgb(66, 133, 244);
+        background: rgb(66, 133, 244);
+        display: flex;
+        align-items: center;
+    }
+
+    .g-logo {
+        width: 21px;
+        height: 21px;
+        background: white;
+    }
+
+    .g-text {
+        font-size: 16px;
+        padding: 8px 10px;
+        color: white;
+        font-family: roboto;
+        text-align: center;
+    }
+    p{
+        margin: 0;
+    }
 </style>
 <main class="login">
     <div class="login__col">
@@ -251,6 +280,12 @@ p {
                     <span class="  ">Sign in</span>
                     <span class="login__btn-spinner"></span>
                 </button>
+                <div class="g_body" >
+                    <a class="g-button" asp-controller="Home" asp-action="LoginGoogle">
+                        <img class="g-logo" src="/Img/Google__G__Logo.png" alt="Google Logo">
+                        <p class="g-text">Sign in with Google</p>
+                    </a>
+                </div>
                 <p class="login__sign-up">Don’t have an account? <a href="#">Sign up</a></p>
             </div>
         </form>

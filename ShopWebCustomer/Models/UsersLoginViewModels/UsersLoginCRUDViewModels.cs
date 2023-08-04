@@ -19,8 +19,15 @@ namespace ShopWebCustomer.Models.UsersLoginViewModels
 		[Compare("Password", ErrorMessage = "Mật khẩu không giống")]
 		[DataType(DataType.Password)]
 		public string? ConfirmPassword { get; set; }
+        public string? UserImage { get; set; }
 
-		public static implicit operator UsersLoginCRUDViewModels(UsersLogin _user)
+        public string? Phone { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Address { get; set; }
+		public IFormFile? AnhDaiDien { get; set; }
+
+        public static implicit operator UsersLoginCRUDViewModels(UsersLogin _user)
 		{
 			return new UsersLoginCRUDViewModels
 			{
@@ -28,7 +35,12 @@ namespace ShopWebCustomer.Models.UsersLoginViewModels
 				ID = _user.ID,
 				UserName = _user.UserName,
 				Password = _user.Password,
-				CashUser = _user.CashUser
+				CashUser = _user.CashUser,
+                UserImage = _user.UserImage,
+                Phone = _user.Phone,
+                FirstName = _user.FirstName,
+                LastName = _user.LastName,
+                Address = _user.Address,
 			};
 		}
 		public static implicit operator UsersLogin(UsersLoginCRUDViewModels vm)
@@ -39,8 +51,13 @@ namespace ShopWebCustomer.Models.UsersLoginViewModels
 				ID = vm.ID,
 				UserName = vm.UserName,
 				Password = vm.Password,
-				CashUser = vm.CashUser
-			};
+				CashUser = vm.CashUser,
+                UserImage = vm.UserImage,
+                Phone = vm.Phone,
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                Address = vm.Address,
+            };
 		}
 	}
 }

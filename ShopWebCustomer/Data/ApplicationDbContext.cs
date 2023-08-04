@@ -15,6 +15,8 @@ namespace ShopWebCustomer.Data
         public DbSet<Products> Products { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<ImagesProduct> ImagesProduct { get; set; }
+        public DbSet<Orders> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
 
 
     }

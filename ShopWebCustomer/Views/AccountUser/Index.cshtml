@@ -1,0 +1,175 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    section {
+        display: none;
+        padding: 20px;
+        border: 1px solid #ddd;
+        overflow: hidden;
+    }
+
+    .tab .input_tab {
+        display: none;
+    }
+
+    .ac_tab {
+        display: inline-block;
+        margin: 0 0 -1px;
+        padding: 15px 25px;
+        font-weight: bold;
+        text-align: center;
+        color: #1e3f79;
+        border: 1px solid transparent;
+    }
+
+        .ac_tab:before {
+            font-weight: normal;
+            margin-right: 10px;
+        }
+
+        .ac_tab:hover {
+            color: #888;
+            cursor: pointer;
+        }
+
+    input:checked + .ac_tab {
+        color: #636363;
+        border: 1px solid #ddd;
+        border-top: 5px solid #1e3f79;
+        border-bottom: 1px solid #fff;
+    }
+
+    #tab1:checked ~ #content1,
+    #tab2:checked ~ #content2,
+    #tab3:checked ~ #content3 {
+        display: block;
+    }
+
+    ul > li {
+        margin-bottom: 10px;
+    }
+
+    .your_login {
+        opacity: 0.5;
+    }
+
+</style>
+<div id="account">
+    <div class="container mt-4">
+        <div class="tab">
+            <input id="tab1" type="radio" name="tabs" class="input_tab" checked>
+            <label for="tab1" class="ac_tab">My Account</label>
+            <input id="tab2" type="radio" class="input_tab" name="tabs">
+            <label for="tab2" class="ac_tab">My Orders</label>
+            <input id="tab3" type="radio" class="input_tab" name="tabs">
+            <label for="tab3" class="ac_tab">My Address</label>
+
+
+            <section id="content1">
+                <h2> My Account</h2>
+                <div class="row">
+                    <div class="col-md-3 col-12">
+                        <img :src="imageUser" style="cursor:pointer;" alt="Image User" v-on:click="handleImageClick"  />
+                        <div class="mt-3">
+                            <button class="btn btn-success" v-on:click="uploadFile">Change</button>
+                        </div>
+                        <input type="file" ref="fileInput" style="display: none" v-on:change="handleFileChange" />
+                    </div>
+                    
+                    <div class="col-md-9 col-12">
+                        <h2>View and edit your personal info below.</h2>
+                        <hr />
+                        <div>
+                            <h3>Account</h3>
+                            <p>
+                                Update your personal information.
+
+                            </p>
+                        </div>
+                        <div>
+                            Login Email: {{email}}
+
+                            <p class="your_login">
+                                Your Login email can't be changed
+                            </p>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mt-3">
+                                    <label class="form-label">Firt Name</label>
+                                    <input class="form-control" type="text" v-model="firstName" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mt-3">
+                                    <label class="form-label">Last Name</label>
+                                    <input class="form-control" type="text" v-model="lastName" />
+                                </div>
+
+                            </div>
+                            <div class="col-6">
+                                <div class="mt-3">
+                                    <label class="form-label">Email</label>
+                                    <input class="form-control" readonly type="email" v-model="formattedEmail" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mt-3">
+                                    <label class="form-label">Phone</label>
+                                    <input class="form-control" type="text" v-model="phone" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3">
+                            <button class="btn btn-success" v-on:click="uploadProfile">Change</button>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </section>
+            <!-- end of section 1 -->
+            <section id="content2">
+                <h2>My Orders</h2>
+                <div class="row">
+                    <div class="col-sm-12" v-if="!checkOrder">
+                       <div class="d-flex align-items-center justify-content-center" >
+                           Bạn chưa có đơn hàng nào
+                       </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4" v-else v-for="(item,index) in orderData" :key="index">
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="#">
+                                    <h5 class="card-title">Your Order ID: {{item.id}} </h5>
+                                    <p class="card-text">Total price: {{formatCurrency(item.total_Price)}} </p>
+                                    <p>Status: <span :class="item.order_Status ? 'text-success' : 'text-warning'">{{ item.order_Status ? 'Done' : 'Pending' }}</span></p>
+
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- end of section 2 -->
+            <section id="content3">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut deserunt doloribus est. Perferendis porro esse autem nulla accusamus totam. Magnam?</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, tempore, itaque! Facere neque aut placeat quia quasi blanditiis ipsa mollitia magnam nobis facilis, dolore debitis architecto tempora dignissimos, qui consequatur, sapiente, iste in error tenetur aliquid quae eveniet. Ipsa pariatur, tenetur consequatur. Optio libero repellendus fuga dignissimos, error, quidem vitae! </p>
+            </section>
+            <!-- end of section 3 -->
+
+        </div>
+
+      
+    </div>
+</div>
+<script src="~/js/frontend/account.js"></script>

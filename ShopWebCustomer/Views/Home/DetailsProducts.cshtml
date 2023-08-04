@@ -1,4 +1,6 @@
 ﻿@model ShopWebCustomer.Models.Products
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 @*
    
 *@
@@ -325,11 +327,12 @@
 		cursor: pointer;
 	}
 </style>
-<div class="pd-wrap">
+<div class="pd-wrap" id="Details_View">
 	<div class="container">
 		<div class="heading-section">
 			<h2>Product Details</h2>
 		</div>
+		<input value="@Model.ID" type="hidden" id="productId"/>
 		<div class="row">
 			<div class="col-md-6">
 				<div id="slider" class="product-slider">
@@ -368,10 +371,10 @@
 						<label for="size">Quantity</label>
 						<form action="#" class="display-flex">
 							<div class="qtyminus">-</div>
-							<input type="text" name="quantity" value="1" class="qty">
+							<input type="text" name="quantity" id="quantity" value="1" class="qty">
 							<div class="qtyplus">+</div>
 						</form>
-						<a href="#" class="round-black-btn">Add to Cart</a>
+						<a href="#" class="round-black-btn" v-on:click="AddToCartVue">Add to Cart</a>
 					</div>
 				</div>
 			</div>
@@ -416,4 +419,4 @@
 		});
 
 </script>
-
+<script src="~/js/frontend/cart.js"></script>

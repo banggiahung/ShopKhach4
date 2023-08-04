@@ -3,17 +3,21 @@
     data: {
         dataItems: [],
         dataCate: [],
-        selectedCategoryID: 0
+        dataMax:[],
+        selectedCategoryID: 0,
+        maxItemsToShow: 12
     },
     mounted() {
         axios.get("/Products/GetAllCategory")
             .then((response) => {
                 this.dataCate = response.data;
+
                 return Promise.resolve();
             });
         axios.get("/Products/GetAllProduct")
             .then((response) => {
-                this.dataItems = response.data;
+                this.dataMax = response.data;
+                this.dataItems = this.dataMax.slice(0, this.maxItemsToShow)
                 return Promise.resolve();
             });
     },

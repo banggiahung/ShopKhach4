@@ -3,7 +3,8 @@
     public class ProductsCRUDViewModels
     {
         public int ID { get; set; }
-        public string? ProductID { get; set; }
+        public int? Quantity { get; set; }
+
         public string? ProductName { get; set; }
         public string? Description { get; set; }
         public string? Slug { get; set; }
@@ -20,7 +21,7 @@
         {
             return new ProductsCRUDViewModels
             {
-                ProductID = _user.ProductID,
+                Quantity = _user.Quantity,
                 ProductName = _user.ProductName,
                 Description = _user.Description,
                 Slug = _user.Slug,
@@ -36,7 +37,7 @@
         {
             return new Products
             {
-                ProductID = vm.ProductID,
+                Quantity = vm.Quantity,
                 ProductName = vm.ProductName,
                 Description = vm.Description,
                 Slug = vm.Slug,

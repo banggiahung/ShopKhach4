@@ -1,31 +1,16 @@
-﻿Admin_vue = new Vue({
-    el: '#Admin_vue',
+﻿order_admin = new Vue({
+    el: '#order_admin',
     data: {
-        dataItems:[],
-        ProductName: "",
-        Description: "",
-        Slug: "",
-        Price: 0,
-        CategoryID: 0,
-        quantity: 0,
-        PrPath: null,
-        imageFile: null,
-        previewImage: null,
-        uploadedImage: null,
-        productID: 0,
-        product_ImagePath: "",
-        id: "",
-        categoryID: 0,
-        categoryName: "",
-        CateItems:[],
+        orderData: [],
+        detailsData: [],
     },
     mounted() {
-        axios.get("/Products/GetAllProduct")
+        axios.get("/Home/GetCartUser")
             .then((response) => {
-                this.dataItems = response.data;
+                this.orderData = response.data;
                 return Promise.resolve();
             }).then(() => {
-                $("#table_products").DataTable({
+                $("#table_orders").DataTable({
                     'columnDefs': [{
                         'targets': [-1],
                         'orderable': false,
@@ -282,219 +267,29 @@
                     },
                 });
             });
-        this.initData();
-
     },
     methods: {
-        initData() {
-           
-            axios.get("/Products/GetAllCategory")
+        getItemsById(orderId) {
+            axios.get(`/Home/GetCartDetailsNoFlase?orderId=${orderId}`)
                 .then((response) => {
-                    this.CateItems = response.data;
-                    return Promise.resolve();
-                })
-        },
-        onFileChange(event) {
-            this.imageFile = event.target.files[0];
-            this.previewImage = URL.createObjectURL(this.imageFile);
-            this.uploadedImage = null;
-        },
-        generateSlug() {
-            // Chuyển đổi tên sản phẩm thành dạng slug
-            this.Slug = this.convertToSlug(this.ProductName);
-        },
-        convertToSlug(text) {
-            // Hàm chuyển đổi thành dạng slug, giữ lại các ký tự tiếng Việt
-            return text
-                .toString() // Đảm bảo text là chuỗi
-                .toLowerCase() // Chuyển tất cả thành chữ thường
-                .normalize("NFD") // Chuyển các ký tự Unicode thành cơ sở và ký tự diacritical marks (phụ âm, dấu thanh, ...)
-                .replace(/[\u0300-\u036f]/g, "") // Loại bỏ các ký tự diacritical marks (phụ âm, dấu thanh, ...)
-                .replace(/\s+/g, "-") // Thay thế dấu cách bằng dấu '-'
-                .replace(/[^a-z0-9\-]/g, "") // Loại bỏ các ký tự đặc biệt
-                .replace(/\-{2,}/g, "-") // Loại bỏ các dấu '-' liên tiếp
-                .replace(/^\-+|\-+$/g, ""); // Đảm bảo slug không bắt đầu hoặc kết thúc bằng dấu '-'
-        },
-        async addProducts() {
-            try {
-                const formData = new FormData();
-                formData.append('ProductName', this.ProductName);
-                formData.append('Quantity', this.quantity);
-                formData.append('Description', this.Description);
-                formData.append('Slug', this.Slug);
-                formData.append('Price', this.Price);
-                formData.append('CategoryID', this.CategoryID); 
-                formData.append('PrPath', this.$refs.PrPath.files[0]);
-
-                await axios.post('/Products/AddProduct', formData,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    });
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thành công',
-                    text: 'Đã lưu thành công',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
-            } catch (error) {
-                console.error(error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Đã có lỗi xảy ra',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload();
-                    }
-                });
-            }
-        },
-        getItemsById(id) {
-            axios.get(`/Products/getIdProducts?id=${id}`)
-                .then((response) => {
-                    this.ProductName = response.data.productName;
-                    this.Description = response.data.description;
-                    this.Slug = response.data.slug;
-                    this.Price = response.data.price;
-                    this.CategoryID = response.data.categoryID;
-                    this.product_ImagePath = response.data.imageMain;
-                    this.productID = response.data.productID;
-                    this.id = response.data.id;
-                    this.quantity = response.data.quantity;
+                    this.detailsData = response.data;
                     return Promise.resolve();
                 });
-            this.resetDataImg();
         },
-        resetData() {
-            this.ProductName = null;
-            this.Description = null;
-            this.Slug = null;
-            this.Price = 0;
-            this.CategoryID = 0;
-            this.product_ImagePath = null;
-            this.productID = null;
-            this.id = null;
-            this.previewImage = null;
-            this.quantity = 0;
-
-           
+        formatCurrency(value) {
+            return value.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD'
+            });
         },
-        resetDataImg() {
-            this.previewImage = null;
-            this.uploadedImage = null;
-            this.imageFile = null;
-            
-        },
-        async editProducts() {
-            try {
-                const formData = new FormData();
-                formData.append('ProductName', this.ProductName);
-                formData.append('Quantity', this.quantity);
-                formData.append('Description', this.Description);
-                formData.append('Slug', this.Slug);
-                formData.append('Price', this.Price);
-                formData.append('CategoryID', this.CategoryID);
-                formData.append('ProductID', this.productID);
-                formData.append('ID', this.id);
-                console.log("this.$refs.PrPath1.files[0] ->", this.$refs.PrPath1.files[0]);
-                if (this.$refs.PrPath1.files[0] != null) {
-                    formData.append('PrPath', this.$refs.PrPath1.files[0]);
-
-                }
-
-                await axios.post('/Products/UpdateProduct', formData,
-                    {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
-                    });
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thành công',
-                    text: 'Đã lưu thành công',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload();
-
-
-                    }
-                });
-            } catch (error) {
-                console.error(error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Lỗi',
-                    text: 'Đã có lỗi xảy ra',
-                    confirmButtonText: 'OK'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload();
-
-                    }
-                });
-            }
-        },
-        getItemsByIdDelete(id) {
-            axios.get(`/Products/getIdProducts/${id}`)
-                .then((response) => {
-                    this.id = response.data.id;
-                    if (this.id != null) {
-                        Swal.fire({
-                            title: 'Xóa sản phẩm',
-                            text: 'Bạn có chắc chắn muốn xóa',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Đồng ý',
-                            cancelButtonText: 'Không!!!'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                const formData = new FormData();
-                                formData.append('ID', this.id);
-                                axios.post('/Products/deleteProducts', formData, {
-                                    headers: {
-                                        'Content-Type': 'application/x-www-form-urlencoded'
-                                    }
-                                }).then(response => {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Thành công',
-                                        text: 'Đã thành công',
-                                        confirmButtonText: 'OK',
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.reload();
-                                        }
-                                    });
-
-                                }).catch(error => {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Lỗi',
-                                        text: 'Đã có lỗi xảy ra vui lòng thử lại',
-                                        confirmButtonText: 'OK'
-                                    });
-                                });
-                            } else {
-                                return;
-                            }
-                        });
-                    }
-                }).catch((error) => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Lỗi',
-                        text: 'Đã có lỗi xảy ra vui lòng thử lại',
-                        confirmButtonText: 'OK'
-                    });
-                })
+        calculateTotalPrice() {
+            let totalPrice = 0;
+            this.detailsData.forEach(item => {
+                const itemPrice = item.product_Price * item.product_Quantity;
+                totalPrice += itemPrice;
+            });
+            return this.formatCurrency(totalPrice);
         },
     },
+     
 });
